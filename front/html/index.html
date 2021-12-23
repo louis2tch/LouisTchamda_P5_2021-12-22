@@ -49,48 +49,6 @@
           <h2>Une gamme d'articles exclusifs</h2>
         </div>
         <section class="items" id="items"> 
-          <script>
-            
-            fetch("http://localhost:3000/api/products/")
-              .then(function(res) {
-                if (res.ok) {
-                  return res.json();
-                }
-              })
-              .then(function(objetProduct) { 
-                for (let infoProduct of objetProduct){
-                  const aProduct = document.createElement("a");
-                    aProduct.setAttribute("href","./product.html?id="+infoProduct._id);
-                  const tagArticle = document.createElement("article");
-                  const imgProduct = document.createElement("img");
-                    imgProduct.setAttribute("src",infoProduct.imageUrl);
-                    imgProduct.setAttribute("alt",infoProduct.altTxt);
-                  const h3nameProduct = document.createElement("h3");
-                    h3nameProduct.setAttribute("class","productName");
-                    //h3nameProduct.setAttribute("id","name-"+i);
-                    h3nameProduct.innerHTML = infoProduct.name;
-                  const pDescription = document.createElement("p");
-                    pDescription.setAttribute("class","productDescription");
-                    //pDescription.setAttribute("id","description-"+i);
-                    pDescription.innerHTML = infoProduct.description;
-                  
-
-                  tagArticle.appendChild(imgProduct);
-                  tagArticle.appendChild(h3nameProduct);
-                  tagArticle.appendChild(pDescription);
-                  aProduct.appendChild(tagArticle);
-                  document.getElementById("items").appendChild(aProduct);
-                  //i = i+1;
-                }
-                //console.log(objetProduct[0].colors);
-              })
-              .catch(function(err) {
-                 alert("Une Erreur est survenue");
-              });
-
-
-
-          </script>
 <!--           <a href="./product.html?id=42">
             <article>
               <img src=".../product01.jpg" alt="Lorem ipsum dolor sit amet, Kanap name1">

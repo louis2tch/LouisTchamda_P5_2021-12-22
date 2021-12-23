@@ -46,34 +46,6 @@
       <div class="limitedWidthBlock">
         <section class="item">
           <article>
-            <script>
-              var productURL = window.location.href;
-              var url = new URL(productURL);
-              let id = url.searchParams("id");
-
-              fetch("http://localhost:3000/api/products/id")
-              .then(function(res) {
-                if (res.ok) {
-                  return res.json();
-                }
-              })
-              .then(function(objetProduct) {
-                const imgProduct = document.createElement("img");
-                  imgProduct.setAttribute("src",objetProduct.imageUrl);
-                  imgProduct.setAttribute("alt",objetProduct.altTxt);
-                  document.getElementById("item__img").appendChild(imgProduct);
-                document.getElementById("title").textContent = objetProduct.name;
-                document.getElementById("price").textContent = objetProduct.price;
-                document.getElementById("description").textContent = objetProduct.description;
-
-                const pDescription = document.createElement("p");
-                  pDescription.setAttribute("class","productDescription");
-                  pDescription.innerHTML = infoProduct.description;
-              })
-              .catch(function(err) {
-                 alert("Une Erreur est survenue");
-              });
-            </script>
             <div class="item__img">
               <!-- <img src="../images/logo.png" alt="Photographie d'un canapé"> -->
             </div>

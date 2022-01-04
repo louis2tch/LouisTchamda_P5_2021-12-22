@@ -1,3 +1,7 @@
+var productURL = window.location.href;
+var url = new URL(productURL);
+let orderId = url.searchParams.get("orderId");
+
 function lisarticle(id,color,quantity,qs){
   fetch("http://localhost:3000/api/products/"+id)
   .then(function(res) {
@@ -128,7 +132,7 @@ function lisarticle(id,color,quantity,qs){
 
   })
   .catch(function(err) {
-      alert("Une Erreur est survenue");
+      alert("Une Erreur est survenue1");
   });
 }
   function showall(){  
@@ -146,43 +150,105 @@ function lisarticle(id,color,quantity,qs){
         
     }
   }
-  showall();
+  //alert("order = "+orderId);
+  if(orderId == null)  showall();
+  else{
+    //localStorage.clear();
+    localStorage.removeItem("stockincart");
+    document.querySelector("#orderId").innerHTML = "<strong>"+orderId+"</strong>";
+  }  
+
 
  
 
   function send(e) {
     e.preventDefault(); 
-    let contact = {
+    let form = document.querySelector(".cart__order__form");
+    //form.removeAttribute("method"); 
+    document.getElementById("firstNameErrorMsg").innerHTML = 
+    (/^$/.test(document.getElementById("firstName").value))?"Champs obligatoire":"";
+    
+    document.getElementById("lastNameErrorMsg").innerHTML = 
+    (/^$/.test(document.getElementById("lastName").value) )?"Champs obligatoire":"";
+
+    document.getElementById("addressErrorMsg").innerHTML = 
+    (/^$/.test(document.getElementById("address").value) )?"Champs obligatoire":"";
+    
+    document.getElementById("cityErrorMsg").innerHTML = 
+    (/^$/.test(document.getElementById("city").value) )?"Champs obligatoire":"";
+
+    document.getElementById("emailErrorMsg").innerHTML = 
+    (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("email").value) )?"":"Incorrecte email, '@' ";
+    
+    let stop = false;
+    if(/^$/.test(document.getElementById("firstName").value) ||
+    /^$/.test(document.getElementById("lastName").value) ||
+    /^$/.test(document.getElementById("address").value) || 
+    /^$/.test(document.getElementById("city").value) ||
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("email").value) == false ){
+     stop=true; 
+    }
+   
+    let contacts = {contact:{
       firstName: document.querySelector("#firstName").value,
       lastName: document.querySelector("#lastName").value,
       address: document.querySelector("#address").value,
       city: document.querySelector("#city").value,
       email: document.querySelector("#email").value
-    };
-    let objLinea = localStorage.getItem("stockincart");
-    alert(objLinea);
-    alert(JSON.stringify(contact));
-
-    /*fetch("http://localhost:3000/api/products/order", {
+    }};
+    let stock = localStorage.getItem("stockincart");
+    stock = JSON.parse(stock);
+    let products = [];
+    for(let st of stock){
+      products.push(st.id);
+    }
+    products=JSON.stringify(products);
+    stock = "{\"products\":"+ products+"}";
+    stock = JSON.parse(stock);
+    //alert(JSON.stringify(stock));
+    let z = {};
+    z = Object.assign(z,contacts,stock); 
+    //alert(JSON.stringify(z));
+   
+   //form.submit();
+   
+   if(stop === false)
+    fetch("http://localhost:3000/api/products/order", {
       method: "POST",
       headers: {
         'Accept': 'application/json', 
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({value: document.getElementById("value").value})
+      body: JSON.stringify(z)
     })
     .then(function(res) {
-      if (res.ok) {
+      if (res.ok) { 
         return res.json();
-      }
+      } 
     })
     .then(function(value) {
-        document
+        /*document
           .getElementById("result")
-          .innerText = value.postData.text;
-    });*/
+          .innerText = value.postData.text;*/
+          window.open("./confirmation.html?orderId="+value.orderId,"_self");
+       
+    })
+    .catch(function(err) {
+      alert("Une Erreur est survenue 2"+err);
+    });
   }
   //
   
+  let form = document.getElementsByClassName("cart__order__form");
+  form[0].removeAttribute("method");
+  form[0].setAttribute("method","post");
+
   document.getElementById("order").addEventListener("click", send);
-   
+
+  
+  /*
+  '{"contact":{"firstName":"Louis","lastName":"Tchamda",
+  "address":"34188 Euclid Avenue Apt J2","city":"Willoughby",
+  "email":"tclo2@mail.ru"},
+  "products":["415b7cacb65d43b2b5c1ff70f3393ad1"]}'
+  */ 

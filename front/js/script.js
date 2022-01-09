@@ -28,5 +28,5 @@ fetch("http://localhost:3000/api/products/")
                 //console.log(objetProduct[0].colors);
               })
               .catch(function(err) {
-                 alert("Une Erreur est survenue");
+                 alert("Une Erreur est survenue" +err);
               });

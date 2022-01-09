@@ -16,7 +16,7 @@ function lisarticle(id,color,quantity,qs){
     let price = objetProduct.price;
     let prices = price*quantity;
     let description = objetProduct.description;
-
+    
     const articleP = document.createElement("article");
         articleP.setAttribute("data-id",id);
         articleP.setAttribute("data-color",color);
@@ -79,7 +79,7 @@ function lisarticle(id,color,quantity,qs){
            divP5.appendChild(pP3);
            divP5.appendChild(inputP);
         divP2.appendChild(divP6);  
-          divP6.appendChild(pP4);
+          divP6.appendChild(pP4); 
 
    
              document.querySelector("#cart__items").appendChild(articleP);
@@ -93,15 +93,14 @@ function lisarticle(id,color,quantity,qs){
               e.preventDefault;
               if(confirm('suprimer cet article?')){
                 articleP.innerHTML='';
-                articleP.setAttribute("class","");
+               // articleP.setAttribute("class","");
+                articleP.removeAttribute("class");
                 actionne();
               }
 
             });
              
-
-
-             inputP.addEventListener('change', function(e){//ajouter/reduire les articles 
+             inputP.addEventListener('change', function(e){//ajouter/reduire des articles 
                 e.preventDefault;
                 if(inputP.value <=0) inputP.value =1; 
                 if(inputP.value >100) inputP.value =100; 
@@ -121,7 +120,7 @@ function lisarticle(id,color,quantity,qs){
               for(let i=0; i<qq.length; i++){
                 s += parseInt(qq[i].value);
                 p += parseInt(pp[i].innerText);
-                stockC += '{"id":"'+aa[i].dataset.id+'","quantity":"'+qq[i].value+'","color":"'+aa[i].dataset.color+'"}';
+                stockC += '{"id":"'+aa[i].dataset.id+'","quantity":"'+qq[i].value+'","color":"'+aa[i].dataset.color+'"}'; //
                 if(i<(qq.length-1)) stockC +=',';
               }           
               document.querySelector("#totalQuantity").textContent = s; 
@@ -150,7 +149,7 @@ function lisarticle(id,color,quantity,qs){
         
     }
   }
-  //alert("order = "+orderId);
+  //vider le localstorage si l'identifiant de la commande existe
   if(orderId == null)  showall();
   else{
     //localStorage.clear();
@@ -164,7 +163,7 @@ function lisarticle(id,color,quantity,qs){
   function send(e) {
     e.preventDefault(); 
     let form = document.querySelector(".cart__order__form");
-    //form.removeAttribute("method"); 
+    
     document.getElementById("firstNameErrorMsg").innerHTML = 
     (/^$/.test(document.getElementById("firstName").value))?"Champs obligatoire":"";
     
@@ -178,7 +177,7 @@ function lisarticle(id,color,quantity,qs){
     (/^$/.test(document.getElementById("city").value) )?"Champs obligatoire":"";
 
     document.getElementById("emailErrorMsg").innerHTML = 
-    (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("email").value) )?"":"Incorrecte email, '@' ";
+    (/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("email").value) )?"":"Incorrect email, '@' ";
     
     let stop = false;
     if(/^$/.test(document.getElementById("firstName").value) ||
@@ -227,14 +226,10 @@ function lisarticle(id,color,quantity,qs){
       } 
     })
     .then(function(value) {
-        /*document
-          .getElementById("result")
-          .innerText = value.postData.text;*/
-          window.open("./confirmation.html?orderId="+value.orderId,"_self");
-       
+      window.open("./confirmation.html?orderId="+value.orderId,"_self");
     })
     .catch(function(err) {
-      alert("Une Erreur est survenue 2"+err);
+      alert("Une Erreur est survenue 2: "+err);
     });
   }
   //
@@ -251,4 +246,5 @@ function lisarticle(id,color,quantity,qs){
   "address":"34188 Euclid Avenue Apt J2","city":"Willoughby",
   "email":"tclo2@mail.ru"},
   "products":["415b7cacb65d43b2b5c1ff70f3393ad1"]}'
+  94ad95a0-6d09-11ec-b7bc-55771d632ee3
   */ 

@@ -40,7 +40,7 @@ fetch("http://localhost:3000/api/products/"+id)
     const addProduct = document.querySelector("#addToCart");
     addProduct.addEventListener("click", function(e){
         e.preventDefault; 
-        if(document.querySelector("#colors").value==""){
+        if(document.querySelector("#colors").value==""){//faire de la couleur un champ obligatoire
         alert("SVP Choisissez une couleur");
         //document.getElementsByTagName("label")[0].style.color = "red";
         document.querySelector("#colors").focus(); 

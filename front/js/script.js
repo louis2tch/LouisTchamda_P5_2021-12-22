@@ -25,8 +25,14 @@ fetch("http://localhost:3000/api/products/")
                   aProduct.appendChild(tagArticle);
                   document.getElementById("items").appendChild(aProduct);
                 }
-                //console.log(objetProduct[0].colors);
+                
               })
               .catch(function(err) {
                  alert("Une Erreur est survenue" +err);
               });
+
+let sQty = localStorage.getItem("stockQty");
+if(parseInt(sQty)>0 && sQty.length>0){
+    let panier = document.getElementsByTagName("li");
+    panier[4].innerHTML = "Panier <strong title='Article(s)'>[" + sQty+ "]</strong>";
+}

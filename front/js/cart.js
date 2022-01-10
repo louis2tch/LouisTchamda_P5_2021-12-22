@@ -124,9 +124,17 @@ function lisarticle(id,color,quantity,qs){
                 if(i<(qq.length-1)) stockC +=',';
               }           
               document.querySelector("#totalQuantity").textContent = s; 
-              document.querySelector("#totalPrice").textContent  = p;           
+              document.querySelector("#totalPrice").textContent  = p;   
+              if(stockC != "")        
               stockC = '['+stockC+']'; 
-              localStorage.setItem("stockincart",stockC);            
+              else localStorage.removeItem("stockincart"); // detruit le storage du panier s'il n'y en a plus d'article
+             
+              localStorage.setItem("stockincart",stockC); //met a jour le storage du panier apres chaque operation fonction du contenu stockC
+
+
+              let panier = document.getElementsByTagName("li");
+              panier[4].innerHTML = (s>0)?"Panier <strong title='Article(s)'>[" + s+ "]</strong>":"Panier"; 
+              localStorage.setItem("stockQty",s);
             }
 
   })
@@ -149,11 +157,12 @@ function lisarticle(id,color,quantity,qs){
         
     }
   }
-  //vider le localstorage si l'identifiant de la commande existe
+  //vider les localstorages si l'identifiant de la commande existe
   if(orderId == null)  showall();
   else{
     //localStorage.clear();
     localStorage.removeItem("stockincart");
+    localStorage.removeItem("stockQty");
     document.querySelector("#orderId").innerHTML = "<strong>"+orderId+"</strong>";
   }  
 
@@ -234,11 +243,17 @@ function lisarticle(id,color,quantity,qs){
   }
   //
   
-  let form = document.getElementsByClassName("cart__order__form");
-  form[0].removeAttribute("method");
-  form[0].setAttribute("method","post");
+let form = document.getElementsByClassName("cart__order__form");
+form[0].removeAttribute("method");
+form[0].setAttribute("method","post");
 
-  document.getElementById("order").addEventListener("click", send);
+document.getElementById("order").addEventListener("click", send);
+
+let sQty = localStorage.getItem("stockQty");
+if(parseInt(sQty)>0 && sQty.length>0){
+    let panier = document.getElementsByTagName("li");
+    panier[4].innerHTML = "Panier <strong title='Article(s)'>[" + sQty+ "]</strong>";
+}
 
   
   /*

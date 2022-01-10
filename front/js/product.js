@@ -35,8 +35,9 @@ fetch("http://localhost:3000/api/products/"+id)
         alert("Une Erreur est survenue");
     });
 
-   
-    //localStorage.removeItem("stockincart");
+    if(localStorage.getItem('stockincart')=="") //detruit le storage du panier s'il est vide
+    localStorage.removeItem("stockincart");
+
     const addProduct = document.querySelector("#addToCart");
     addProduct.addEventListener("click", function(e){
         e.preventDefault; 
@@ -85,11 +86,21 @@ fetch("http://localhost:3000/api/products/"+id)
             }
             // localStorage.removeItem("stockincart");
             let objLinea = localStorage.getItem("stockincart");
-
-            alert(objLinea);
-            //let panier = document.getElementsByTagName("li");
-            //panier[4].textContent = panier[4].textContent+" {long}";
-           // alert(panier[4].textContent+" {long}");
+            //alert(objLinea);
+            let qty =0;
+            let acPs = JSON.parse(objLinea); 
+            for (let  ps  of acPs){ // la quantite d'article dans le panier
+                qty  +=  parseInt(ps.quantity);             
+            }
+            let panier = document.getElementsByTagName("li"); 
+            panier[4].innerHTML = "Panier <strong title='Article(s)'>[" + qty+ "]</strong>";
+            localStorage.setItem("stockQty", qty );
+        
         } 
         
     });
+    let sQty = localStorage.getItem("stockQty");
+    if(parseInt(sQty)>0 && sQty.length>0){
+        let panier = document.getElementsByTagName("li");
+        panier[4].innerHTML = "Panier <strong title='Article(s)'>[" + sQty+ "]</strong>";
+    }    
